@@ -39,6 +39,11 @@ namespace KantorSederhana.Model
                         CreateEmployee();
                         Console.WriteLine(" ");
                         break;
+                    case "4":
+                        Console.Clear();
+                        DeleteEmployee();
+                        Console.WriteLine(" ");
+                        break;
                     case "q":
                         Console.WriteLine("Exiting application ....");
                         Console.Clear();
@@ -127,11 +132,46 @@ namespace KantorSederhana.Model
                         "VALUES (@name, @username, @password, @hireDate, @idDepartement, @idDivision, @idManager, @salary, @privilege)";
                     sqlCommand.ExecuteNonQuery();
                     sqlTransaction.Commit();
-                    Console.WriteLine("Success Adding new timesheet !!!");
+                    Console.WriteLine("Success membuat karyawan abru !!!");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine("Input tidak valid");
+                }
+            }
+        }
+        void DeleteEmployee()
+        {
+            DisplayQuery("SELECT id, name FROM Employee");
+            Console.Write("Pilih id karyawan yang akan dihapus : ");
+            string input = Console.ReadLine();
+            Program program = new Program();
+            using (SqlConnection conn = new SqlConnection(program.connectionString))
+            {
+                conn.Open();
+                SqlTransaction sqlTransaction = conn.BeginTransaction();
+
+                SqlCommand sqlCommand = conn.CreateCommand();
+                sqlCommand.Transaction = sqlTransaction;
+
+                SqlParameter sqlParameter = new SqlParameter();
+                sqlParameter.ParameterName = "@id";
+                sqlParameter.Value = input;
+
+                sqlCommand.Parameters.Add(sqlParameter);
+
+
+                try
+                {
+                    sqlCommand.CommandText = "DELETE FROM Employee " +
+                        "WHERE id = @id";
+                    sqlCommand.ExecuteNonQuery();
+                    sqlTransaction.Commit();
+                    Console.WriteLine("Success Menghapus karywan !!!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Input tidak valid");
                 }
             }
         }

@@ -119,7 +119,7 @@ namespace KantorSederhana.Model
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine("Input tidak valid");
                 }
             }
         }
