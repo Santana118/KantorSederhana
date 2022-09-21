@@ -11,7 +11,7 @@ namespace KantorSederhana.Model
         public string DepartementId { get; set; }
         public string DivisionId { get; set; }
         public string PrivilegeLevel { get; set; }
-        SqlConnection conn;
+        public SqlConnection conn;
         public virtual void Homepage()
         {
             while (true)

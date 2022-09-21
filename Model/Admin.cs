@@ -15,7 +15,7 @@ namespace KantorSederhana.Model
                 Console.WriteLine($"---------------------------");
                 Console.WriteLine($"Pilih Opsi :");
                 Console.WriteLine($"1. Board Annoucement ");
-                Console.WriteLine($"2. Timesheet ");
+                Console.WriteLine($"2. List All Timesheet ");
                 Console.WriteLine($"3. Add Employee ");
                 Console.WriteLine($"4. Remove Employee ");
                 Console.WriteLine($"5. Update Employee ");
@@ -33,7 +33,7 @@ namespace KantorSederhana.Model
                         break;
                     case "2":
                         Console.Clear();
-                        TimesheetBoard();
+                        ListAllTimesheet();
                         Console.WriteLine(" ");
                         break;
                     case "3":
@@ -282,6 +282,52 @@ namespace KantorSederhana.Model
                 }
             }
 
+        }
+        void ListAllTimesheet()
+        {
+            string query = "SELECT Timesheet.dateStart, Timesheet.dateEnd, Project.name, Departement.name, Division.name, Timesheet.task, Timesheet.currentStatus " +
+                "FROM Timesheet " +
+                "JOIN Departement ON(Timesheet.departementId = Departement.id) " +
+                "JOIN Division ON(Timesheet.divisionId = Division.id) " +
+                "JOIN Project ON(Timesheet.projectId = Project.id) " +
+                "ORDER BY Timesheet.dateStart ASC;";
+            Program program = new Program();
+            conn = new SqlConnection(program.connectionString);
+            SqlCommand sqlCommand = new SqlCommand(query, conn);
+            try
+            {
+                conn.Open();
+                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                {
+                    if (sqlDataReader.HasRows)
+                    {
+                        Console.WriteLine($"TIMESHEET FOR {this.Name}");
+                        Console.WriteLine("{0,-18}  {1,-18}  {2, -20}  {3, -10}  {4, -10}  {5, -10}  {6, -10}", "START DATE", "END DATE", "PROJECT", "Departemen", "Division", "TASK", "STATUS");
+                        while (sqlDataReader.Read())
+                        {
+                            Console.WriteLine("{0}|{1}|{2}|{3}|{4}|{5}|{6}",
+                                sqlDataReader[0],
+                                sqlDataReader[1],
+                                sqlDataReader[2],
+                                sqlDataReader[3],
+                                sqlDataReader[4],
+                                sqlDataReader[5],
+                                sqlDataReader[6]);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("NO SCHEDULE");
+                    }
+
+                    sqlDataReader.Close();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
