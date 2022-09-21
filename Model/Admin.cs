@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Text;
 
@@ -33,6 +34,11 @@ namespace KantorSederhana.Model
                         TimesheetBoard();
                         Console.WriteLine(" ");
                         break;
+                    case "3":
+                        Console.Clear();
+                        CreateEmployee();
+                        Console.WriteLine(" ");
+                        break;
                     case "q":
                         Console.WriteLine("Exiting application ....");
                         Console.Clear();
@@ -43,4 +49,91 @@ namespace KantorSederhana.Model
                 }
             }
         }
+        void CreateEmployee()
+        {
+            string[] sendData = new string[9];
+            Console.Write("Masukkan Nama Lengkap : ");
+            sendData[0] = Console.ReadLine();
+            Console.Write("username : ");
+            sendData[1] = Console.ReadLine();
+            Console.Write("Password : ");
+            sendData[2] = Console.ReadLine();
+            Console.Write("Tanggal Diterima (YYYY-MM-DD) : ");
+            sendData[3] = Console.ReadLine();
+            DisplayQuery("SELECT * FROM Departement");
+            Console.Write("Pilih Id Departemen : ");
+            sendData[4] = Console.ReadLine();
+            DisplayQuery("SELECT * FROM Division");
+            Console.Write("Pilih Id Divisi : ");
+            sendData[5] = Console.ReadLine();
+            DisplayQuery("SELECT id, name FROM Division WHERE managerId = NULL");
+            Console.Write("Pilih ID Manager : ");
+            sendData[6] = Console.ReadLine();
+            Console.Write("Gaji ");
+            sendData[7] = Console.ReadLine();
+            Console.Write("Privilege Level : ");
+            sendData[8] = Console.ReadLine();
+
+            Program program = new Program();
+            using (SqlConnection conn = new SqlConnection(program.connectionString))
+            {
+                conn.Open();
+                SqlTransaction sqlTransaction = conn.BeginTransaction();
+
+                SqlCommand sqlCommand = conn.CreateCommand();
+                sqlCommand.Transaction = sqlTransaction;
+
+                SqlParameter sqlParameter = new SqlParameter();
+                sqlParameter.ParameterName = "@name";
+                sqlParameter.Value = sendData[0];
+                SqlParameter sqlParameter1 = new SqlParameter();
+                sqlParameter1.ParameterName = "@username";
+                sqlParameter1.Value = sendData[1];
+                SqlParameter sqlParameter2 = new SqlParameter();
+                sqlParameter2.ParameterName = "@password";
+                sqlParameter2.Value = sendData[2];
+                SqlParameter sqlParameter3 = new SqlParameter();
+                sqlParameter3.ParameterName = "@hireDate";
+                sqlParameter3.Value = sendData[3];
+                SqlParameter sqlParameter4 = new SqlParameter();
+                sqlParameter4.ParameterName = "@idDepartement";
+                sqlParameter4.Value = sendData[4];
+                SqlParameter sqlParameter5 = new SqlParameter();
+                sqlParameter5.ParameterName = "@idDivision";
+                sqlParameter5.Value = sendData[5];
+                SqlParameter sqlParameter6 = new SqlParameter();
+                sqlParameter6.ParameterName = "@idManager";
+                sqlParameter6.Value = sendData[6];
+                SqlParameter sqlParameter7 = new SqlParameter();
+                sqlParameter7.ParameterName = "@salary";
+                sqlParameter7.Value = sendData[7];
+                SqlParameter sqlParameter8 = new SqlParameter();
+                sqlParameter8.ParameterName = "@privilege";
+                sqlParameter8.Value = sendData[8];
+
+                sqlCommand.Parameters.Add(sqlParameter);
+                sqlCommand.Parameters.Add(sqlParameter1);
+                sqlCommand.Parameters.Add(sqlParameter2);
+                sqlCommand.Parameters.Add(sqlParameter3);
+                sqlCommand.Parameters.Add(sqlParameter4);
+                sqlCommand.Parameters.Add(sqlParameter5);
+                sqlCommand.Parameters.Add(sqlParameter6);
+                sqlCommand.Parameters.Add(sqlParameter7);
+                sqlCommand.Parameters.Add(sqlParameter8);
+
+                try
+                {
+                    sqlCommand.CommandText = "INSERT INTO Employee " +
+                        "VALUES (@name, @username, @password, @hireDate, @idDepartement, @idDivision, @idManager, @salary, @privilege)";
+                    sqlCommand.ExecuteNonQuery();
+                    sqlTransaction.Commit();
+                    Console.WriteLine("Success Adding new timesheet !!!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+        }
+    }
 }
