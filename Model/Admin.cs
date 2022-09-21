@@ -270,7 +270,7 @@ namespace KantorSederhana.Model
                 try
                 {
                     sqlCommand.CommandText = "UPDATE Employee " +
-                        "SET name = @name, username = @username, passwd = @password, hireDate = @hireDate, departementId = @idDepartement, divisionId = @idDivision, managerId = @idManager, salary = @salary, privilegeLevel = @privilege) " +
+                        "SET name = @name, username = @username, passwd = @password, hireDate = @hireDate, departementId = @idDepartement, divisionId = @idDivision, managerId = @idManager, salary = @salary, privilegeLevel = @privilege " +
                         "WHERE id = @id";
                     sqlCommand.ExecuteNonQuery();
                     sqlTransaction.Commit();
@@ -278,7 +278,7 @@ namespace KantorSederhana.Model
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Input tidak valid");
+                    Console.WriteLine(ex);
                 }
             }
 
