@@ -53,7 +53,7 @@ namespace KantorSederhana.Model
                         break;
                     case "6":
                         Console.Clear();
-                        ListEmployee();
+                        DisplayQuery("SELECT * FROM Employee");
                         Console.WriteLine(" ");
                         break;
                     case "q":
