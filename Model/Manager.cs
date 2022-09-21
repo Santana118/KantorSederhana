@@ -185,5 +185,6 @@ namespace KantorSederhana.Model
                 }
             }
         }
+
     }
 }

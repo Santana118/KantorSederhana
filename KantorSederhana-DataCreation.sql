@@ -50,5 +50,5 @@ INSERT INTO Timesheet VALUES (1,1,5,'Penentuan Standar Materi Kurikulum','2022-0
 INSERT INTO Timesheet VALUES (1,1,5,'Pengajaran','2022-09-15','2022-10-14','ONGOING');
 INSERT INTO Timesheet VALUES (1,1,5,'Evaluasi','2022-07-30','2022-10-15','ONCOMING');
 
-Annoucement Board
+-- -- Annoucement Board
 INSERT INTO Announcement VALUES ('2022-09-21',2,'MEETING DIVISI IT AKAN DILAKSANAKAN HARI RABU INI !! HARAP UNTUK SEMUA PERSONIL UNTUK HADIR TEPAT WAKTU !!!')
