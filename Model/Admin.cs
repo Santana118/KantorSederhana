@@ -283,8 +283,5 @@ namespace KantorSederhana.Model
             }
 
         }
-        void ListEmployee()
-        {
-        }
     }
 }

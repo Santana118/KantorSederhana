@@ -17,6 +17,7 @@ namespace KantorSederhana.Model
                 Console.WriteLine($"1. Board Annoucement ");
                 Console.WriteLine($"2. Timesheet ");
                 Console.WriteLine($"3. Create Timesheet ");
+                Console.WriteLine($"4. Create New Project ");
                 Console.WriteLine($"q. Logout ");
                 Console.WriteLine($"---------------------------");
 
@@ -36,6 +37,11 @@ namespace KantorSederhana.Model
                     case "3":
                         Console.Clear();
                         CreateTimesheet();
+                        Console.WriteLine(" ");
+                        break;
+                    case "4":
+                        Console.Clear();
+                        CreateProject();
                         Console.WriteLine(" ");
                         break;
                     case "q":
@@ -120,6 +126,62 @@ namespace KantorSederhana.Model
                 catch (Exception ex)
                 {
                     Console.WriteLine("Input tidak valid");
+                }
+            }
+        }
+
+        void CreateProject()
+        {
+            string[] sendData = new string[4];
+            Console.Write("Nama Project : ");
+            sendData[0] = Console.ReadLine();
+            DisplayQuery("SELECT * FROM Employee");
+            Console.Write("ID Penanggung Jawab : ");
+            sendData[1] = Console.ReadLine();
+            Console.Write("Tanggal Mulai (YYYY-MM-DD) : ");
+            sendData[2] = Console.ReadLine();
+            Console.Write("Tanggal Berakhir (YYY-MM-DD) : ");
+            sendData[3] = Console.ReadLine();
+
+            Program program = new Program();
+            using (SqlConnection conn = new SqlConnection(program.connectionString))
+            {
+                conn.Open();
+                SqlTransaction sqlTransaction = conn.BeginTransaction();
+
+                SqlCommand sqlCommand = conn.CreateCommand();
+                sqlCommand.Transaction = sqlTransaction;
+
+                SqlParameter sqlParameter = new SqlParameter();
+                sqlParameter.ParameterName = "@namaProject";
+                sqlParameter.Value = sendData[0];
+                SqlParameter sqlParameter1 = new SqlParameter();
+                sqlParameter1.ParameterName = "@idEmployee";
+                sqlParameter1.Value = sendData[1];
+                SqlParameter sqlParameter2 = new SqlParameter();
+                sqlParameter2.ParameterName = "@dateStart";
+                sqlParameter2.Value = sendData[2];
+                SqlParameter sqlParameter3 = new SqlParameter();
+                sqlParameter3.ParameterName = "@dateEnd";
+                sqlParameter3.Value = sendData[3];
+
+
+                sqlCommand.Parameters.Add(sqlParameter);
+                sqlCommand.Parameters.Add(sqlParameter1);
+                sqlCommand.Parameters.Add(sqlParameter2);
+                sqlCommand.Parameters.Add(sqlParameter3);
+
+                try
+                {
+                    sqlCommand.CommandText = "INSERT INTO Project " +
+                        "VALUES (@namaProject, @idEmployee, @dateStart, @dateEnd)";
+                    sqlCommand.ExecuteNonQuery();
+                    sqlTransaction.Commit();
+                    Console.WriteLine("Success Adding new Project !!!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
                 }
             }
         }
