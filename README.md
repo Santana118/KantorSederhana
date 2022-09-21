@@ -8,8 +8,8 @@ username : admin
 password : admin
 
 > manager
-username : megawatt
-password : megawatt
+username : annisa
+password : annisa
 
 > basic
 username : upin
