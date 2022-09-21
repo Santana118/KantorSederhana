@@ -208,7 +208,7 @@ namespace KantorSederhana.Model
             DisplayQuery("SELECT * FROM Division");
             Console.Write("Pilih Id Divisi : ");
             sendData[5] = Console.ReadLine();
-            DisplayQuery("SELECT id, name FROM Division WHERE managerId = NULL");
+            DisplayQuery("SELECT id, name FROM Employee WHERE managerId IS NULL");
             Console.Write("Pilih ID Manager : ");
             sendData[6] = Console.ReadLine();
             Console.Write("Gaji ");
